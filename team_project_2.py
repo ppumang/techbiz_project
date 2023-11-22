@@ -25,11 +25,14 @@ if __name__ == '__main__':
 
     # load data
     # output_directory = directory + '/output_1/'
-    output_directory = directory + '/output_2/'
+    # output_directory = directory + '/output_1_3years/'
+    # output_directory = directory + '/output_2/'
+    output_directory = directory + '/output_2_3years/'
     directory += '/input/'
-    # file_name = 'search_result_1'
-    file_name = 'search_result_2'
+    file_name = 'search_result_2_3years'
+    # file_name = 'search_result_2'
     data = pd.read_excel(directory + file_name + '.xls', skiprows=7)
+    LDA_RECENT_PERIOD = 3
 
     data['file_name'] = file_name
 
@@ -323,9 +326,12 @@ if __name__ == '__main__':
     title = LDA_0.get_most_similar_doc2topic(
         data_input, title='title', date='year_application')
     topic_time_df = LDA_0.get_TVByTime(data_input, 'year_application')
-    topic_time_df_summary = LDA_0.get_summary_TVByTime(10)
+    print('get_TVByTime DONE')
+    topic_time_df_summary = LDA_0.get_summary_TVByTime(LDA_RECENT_PERIOD)
+    print('get_summary_TVByTime DONE')
 
-    LDA_0.save(output_directory, 'test.xlsx', data=data_input)
+    LDA_0.save(output_directory, 'test.xlsx', data=data_input,
+               recent_period=LDA_RECENT_PERIOD)
 
     import pyLDAvis.gensim_models
     import pyLDAvis

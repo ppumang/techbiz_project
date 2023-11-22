@@ -633,12 +633,10 @@ class LDA_gensim:
 
         volume = topic_time_df.apply(lambda x: np.sum(x))
         volume_recent = topic_time_df_recent.apply(lambda x: np.sum(x))
-
         cagr = topic_time_df.apply(lambda x: CAGR(
             x[start_year], x[end_year], total_period))
         cagr_recent = topic_time_df_recent.apply(
             lambda x: CAGR(x[recent_year], x[end_year], recent_period))
-
         result = pd.concat([volume, volume_recent, cagr, cagr_recent], axis=1)
 
         result.columns = ['volume', 'volume_recent', 'CAGR', 'CAGR_recent']
@@ -760,7 +758,7 @@ class LDA_gensim:
         # 토픽 간 평균 유사도
         return (result)
 
-    def save(self, directory, file_name, data):
+    def save(self, directory, file_name, data, recent_period=10):
 
         writer = pd.ExcelWriter(directory + 'LDA_results_' + file_name+'.xlsx',
                                 engine='xlsxwriter')
@@ -779,7 +777,7 @@ class LDA_gensim:
 
         self.get_TVByTime(data, 'year_application').to_excel(
             writer, sheet_name='TVByTimes', index=1)
-        self.get_summary_TVByTime(10).to_excel(
+        self.get_summary_TVByTime(recent_period).to_excel(
             writer, sheet_name='TVByTimes_summary', index=1)
         # result.to_excel(writer , sheet_name = 'topic_volume_cagr', index = 1)
 
